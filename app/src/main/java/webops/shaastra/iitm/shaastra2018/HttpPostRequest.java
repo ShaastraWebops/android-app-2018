@@ -19,6 +19,8 @@ public class HttpPostRequest extends AsyncTask<String,Void,JSONObject> {
     public static final String REQ_METHOD_POST = "POST";
     public static final int REQ_TIMEOUT = 15000;
     public static final int CONNECT_TIMEOUT = 15000;
+    public static JSONObject param1 = new JSONObject();
+
 
     @Override
     protected JSONObject doInBackground(String... strings) {
@@ -69,8 +71,22 @@ public class HttpPostRequest extends AsyncTask<String,Void,JSONObject> {
         return finalresult;
     }
 
-    private static JSONObject convert_to_json(String response) {
+    //for creating jsonobject of parameters required for post request
+    //this will be called before calling execute() from any activity, such as param1 = sendparams("name","Shaastra");
+    //so when they keep on calling it will append all the params and finally need to be converted to string for calling execute().
 
+
+    public static JSONObject sendparams(String key , String value){
+        try {
+            param1.accumulate(key,value);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return param1;
+
+    }
+
+    private static JSONObject convert_to_json(String response) {
 
         JSONObject final_response = null;
         try {
