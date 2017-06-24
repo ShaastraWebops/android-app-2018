@@ -1,6 +1,7 @@
 package webops.shaastra.iitm.shaastra2018;
 
 import android.content.Context;
+import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -77,7 +78,9 @@ public class MainActivity extends AppCompatActivity {
             JSONArray locsjson = sampleFile.getJSONArray("Locations");
             for(int i=0;i<locsjson.length();i++){
                 JSONObject locationjson = locsjson.getJSONObject(i);
-                Location location = new Location(locationjson.getString("loc"),locationjson.getDouble("lat"),locationjson.getDouble("lng"));
+                Location location = new Location(locationjson.getString("loc"));
+                location.setLatitude(locationjson.getDouble("lat"));
+                location.setLongitude(locationjson.getDouble("lng"));
                 locs.add(location);
             }
         } catch (JSONException e) {
