@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    android:layout_width="wrap_content"
+    android:id="@+id/cv_popup"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="32dp"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    android:contextClickable="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cardborder"
+            >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_qr_response"
+        android:text="Textviewgcjjjjjjjjjjj"
+        android:gravity="center"
+        android:contextClickable="true"
+        android:textColor="#4a148c"
+        android:textSize="16dp"
+        android:layout_margin="16dp"
+        android:layout_centerHorizontal="true"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tv_qr_response">
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:text="Dismiss"
+        android:textSize="12dp"
+        android:textColor="#000000"
+        android:background="#e57373"
+        android:contextClickable="true"
+        android:elevation="8dp"
+        android:id="@+id/bt_pop_dismiss"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_alignBottom="@+id/bt_go" />
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:text="Navigate"
+                android:textSize="12dp"
+                android:textColor="#000000"
+                android:elevation="8dp"
+                android:background="#43a047"
+                android:contextClickable="true"
+                android:id="@+id/bt_go"
+                android:layout_toRightOf="@+id/bt_pop_dismiss"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="32dp"
+                />
+    </RelativeLayout>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
