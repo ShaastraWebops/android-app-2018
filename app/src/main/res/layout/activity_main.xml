@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/rl_main"
     tools:context="webops.shaastra.iitm.shaastra2018.MainActivity">
 
 
@@ -13,5 +14,16 @@
         android:id="@+id/imView"
         tools:layout_editor_absoluteY="8dp"
         tools:layout_editor_absoluteX="8dp" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bt_qr_scan"
+        android:text="Scan QR_code"
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimary"
+        android:contextClickable="true"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"/>
 
-</android.support.constraint.ConstraintLayout>
+
+</RelativeLayout>
