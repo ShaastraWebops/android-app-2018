@@ -53,7 +53,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button bt_qrscan;
+    Button bt_qrscan, log_act_button;
     //qr code scanner object
     private IntentIntegrator qrScan;
     boolean isClicked = true;
@@ -114,6 +114,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ImageView imview = (ImageView) findViewById(R.id.imView);
 
         imageLoader.displayImage(testImageURL,imview);
+
+        log_act_button = (Button) findViewById(R.id.login_act_button);
+        log_act_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(i);
+            }
+        });
 
 
 
