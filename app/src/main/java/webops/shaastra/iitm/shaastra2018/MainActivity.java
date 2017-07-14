@@ -60,8 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     PopupWindow popUpWindow;
     RelativeLayout mainLayout;
     CardView containerLayout;
-
-
+    private Button reg_act_button;
 
 
     @Override
@@ -120,6 +119,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(i);
+            }
+        });
+
+        reg_act_button = (Button) findViewById(R.id.register_act_button);
+        reg_act_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, RegisterActivity.class);
                 startActivity(i);
             }
         });

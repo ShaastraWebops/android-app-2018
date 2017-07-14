@@ -81,8 +81,8 @@ public class RegisterActivity extends AppCompatActivity{
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        Button mEmailRegisterButton = (Button) findViewById(R.id.email_register_button);
+        mEmailRegisterButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptRegister();
@@ -193,7 +193,7 @@ public class RegisterActivity extends AppCompatActivity{
     }
 
     /**
-     * Represents an asynchronous Register task used to authenticate
+     * Represents an asynchronous Register task used to create
      * the user.
      */
     public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
