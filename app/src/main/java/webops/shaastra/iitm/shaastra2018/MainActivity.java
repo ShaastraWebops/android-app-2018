@@ -45,6 +45,7 @@ import org.json.JSONObject;
 import java.io.File;
 
 import webops.shaastra.iitm.shaastra2018.imageCaching.ImageUtil;
+import webops.shaastra.iitm.shaastra2018.mainUI.InitialSplash;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     RelativeLayout mainLayout;
     CardView containerLayout;
     private Button reg_act_button;
+    private Button splash_test;
 
 
     @Override
@@ -128,6 +130,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, RegisterActivity.class);
+                startActivity(i);
+            }
+        });
+
+        splash_test = (Button) findViewById(R.id.splash_test);
+        splash_test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, InitialSplash.class);
                 startActivity(i);
             }
         });
