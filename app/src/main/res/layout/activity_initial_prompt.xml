@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="webops.shaastra.iitm.shaastra2018.mainUI.InitialPromptActivity">
+    <LinearLayout
+        android:layout_width="368dp"
+        android:layout_height="576dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp">
+            <TextView
+                android:layout_width="368dp"
+                android:layout_height="wrap_content"
+                tools:layout_editor_absoluteY="0dp"
+                tools:layout_editor_absoluteX="8dp"
+                android:id="@+id/initPromptTV"
+                android:textSize="35dp"
+                android:textAlignment="center"
+                android:textColor="#000428"
+                android:paddingTop="100dp"
+                android:text="Sign up to get notifications,\n register for events, easy payments,\n and more!"/>
+
+
+            <Button
+                android:id="@+id/initPromptSignUp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="sign up"
+                android:layout_gravity="center"/>
+
+            <Button
+                android:id="@+id/initPromptSignin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign in instead"
+                android:layout_gravity="center"/>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

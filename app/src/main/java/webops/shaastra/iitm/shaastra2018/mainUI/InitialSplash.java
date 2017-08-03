@@ -34,7 +34,7 @@ public class InitialSplash extends AppCompatActivity {
             @Override
             public void run() {
                 /* Create an Intent that will start the Menu-Activity. */
-                Intent mainIntent = new Intent(InitialSplash.this, MainActivity.class);
+                Intent mainIntent = new Intent(InitialSplash.this, InitialPromptActivity.class);
                 InitialSplash.this.startActivity(mainIntent);
                 InitialSplash.this.finish();
             }
