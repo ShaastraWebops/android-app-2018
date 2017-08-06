@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "233661904767",
+    "firebase_url": "https://shaastra-2018-mobile-app-cfe36.firebaseio.com",
+    "project_id": "shaastra-2018-mobile-app-cfe36",
+    "storage_bucket": "shaastra-2018-mobile-app-cfe36.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:233661904767:android:71ebda1ec38c067b",
+        "android_client_info": {
+          "package_name": "webops.shaastra.iitm.shaastra2018"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "233661904767-uai5tlb63skfnfmmslpi7ql0f2m4ejgi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "webops.shaastra.iitm.shaastra2018",
+            "certificate_hash": "4c53a2c91f6eeabe030fd267ae22a3e0151be076"
+          }
+        },
+        {
+          "client_id": "233661904767-rriv2h70qvta0gp6dcbv44o58k79pfu1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTz1FIc0INAcJXCEKGqRmDJjNMGrtcv3w"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "233661904767-rriv2h70qvta0gp6dcbv44o58k79pfu1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
