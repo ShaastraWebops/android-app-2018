@@ -1,12 +1,22 @@
 package webops.shaastra.iitm.shaastra2018.fragments;
 
-import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import webops.shaastra.iitm.shaastra2018.R;
 
@@ -23,6 +33,13 @@ public class Mapfragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    public String loc;
+    MapView mMapView;
+    private GoogleMap googleMap;
+    public Double lat1,lng1;
+    final static float INITIAL_ZOOM = 17.0f;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -56,16 +73,53 @@ public class Mapfragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            loc = getArguments().getString("loc");
+            lat1 = getArguments().getDouble("lat");
+            lng1 = getArguments().getDouble("lng");
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_maps, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_maps, container, false);
+
+        mMapView = (MapView) rootView.findViewById(R.id.mapView);
+        mMapView.onCreate(savedInstanceState);
+
+        mMapView.onResume();
+                                    // needed to get the map to display immediately
+        try {
+            MapsInitializer.initialize(getActivity().getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mMapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap mMap) {
+                googleMap = mMap;
+
+                // For showing a move to my location button
+                googleMap.setMyLocationEnabled(true);
+
+                // Add a marker on the location of the event which was passed as an extra in the intent
+                LatLng eventLoc = new LatLng(lat1,lng1);
+                googleMap.addMarker(new MarkerOptions().position(eventLoc).title(loc));
+
+                // Move the camera and zoom it in
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(eventLoc).zoom(12).build();
+                // For zooming automatically to the location of the marker
+                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+
+
+            }
+        });
+
+    return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -75,22 +129,14 @@ public class Mapfragment extends Fragment {
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
+
+
 
     /**
      * This interface must be implemented by activities that contain this

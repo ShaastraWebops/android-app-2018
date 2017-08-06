@@ -1,13 +1,40 @@
 package webops.shaastra.iitm.shaastra2018.activities;
 
 
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
+
 import webops.shaastra.iitm.shaastra2018.R;
+import webops.shaastra.iitm.shaastra2018.fragments.Eventsfragment;
+import webops.shaastra.iitm.shaastra2018.fragments.Homefragment;
+import webops.shaastra.iitm.shaastra2018.fragments.Hospitalityfragment;
+import webops.shaastra.iitm.shaastra2018.fragments.Logoutfragment;
+import webops.shaastra.iitm.shaastra2018.fragments.Mapfragment;
+import webops.shaastra.iitm.shaastra2018.fragments.Showsfragment;
+import webops.shaastra.iitm.shaastra2018.fragments.Sponsorsfragment;
+import webops.shaastra.iitm.shaastra2018.fragments.Spotlightfragment;
+import webops.shaastra.iitm.shaastra2018.fragments.Summitfragment;
+import webops.shaastra.iitm.shaastra2018.fragments.UserProfilefragment;
+import webops.shaastra.iitm.shaastra2018.fragments.Workshopsfragment;
 
-public class NavigationActivity extends AppCompatActivity {
+public class NavigationActivity extends AppCompatActivity  implements Homefragment.OnFragmentInteractionListener{
 
-    private NavigationView navigationView;
+    private  NavigationView navigationView;
     private DrawerLayout drawer;
-    private View navHeader;
     private Toolbar toolbar;
     private FloatingActionButton fab;
 
@@ -78,7 +105,7 @@ public class NavigationActivity extends AppCompatActivity {
         toggle.syncState();
 
         // initializing navigation menu
-
+        navigationView = (NavigationView)findViewById(R.id.nav_view);
         setUpNavigationView();
 
         if (savedInstanceState == null) {
@@ -95,8 +122,6 @@ public class NavigationActivity extends AppCompatActivity {
      * selected from navigation menu
      */
     private void loadHomeFragment() {
-        // selecting appropriate nav menu item
-        selectNavMenu();
 
         // set toolbar title
         setToolbarTitle();
@@ -121,7 +146,7 @@ public class NavigationActivity extends AppCompatActivity {
             public void run() {
                 // update the main content by replacing fragments
                 Fragment fragment = getHomeFragment();
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
                         android.R.anim.fade_out);
                 fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
@@ -157,13 +182,12 @@ public class NavigationActivity extends AppCompatActivity {
             case 3:
                 Workshopsfragment workshopsfragment = new Workshopsfragment();
                 return workshopsfragment;
-
             case 4:
-                Summitfragment  summitfragment = new Summitfragment();
+                Summitfragment summitfragment = new Summitfragment();
                 return summitfragment;
             case 5:
                 Spotlightfragment spotlightfragment = new Spotlightfragment();
-                return  spotlightfragment;
+                return spotlightfragment;
             case 6:
                 Showsfragment showsfragment = new Showsfragment();
                 return showsfragment;
@@ -172,16 +196,21 @@ public class NavigationActivity extends AppCompatActivity {
                 return hospitalityfragment;
             case 8:
                 Mapfragment mapfragment = new Mapfragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("loc","KV Grounds RegistrationDesk");
+                bundle.putDouble("lat",12.992964);
+                bundle.putDouble("lng",80.232450);
+                mapfragment.setArguments(bundle);
                 return mapfragment;
             case 9:
                 Sponsorsfragment sponsorsfragment = new Sponsorsfragment();
                 return sponsorsfragment;
             case 10:
+
+                    return new Homefragment();
+            case 11:
                 Logoutfragment logoutfragment = new Logoutfragment();
                 return logoutfragment;
-            case 11:
-                break;
-
             default:
                 return new Homefragment();
         }
@@ -189,10 +218,6 @@ public class NavigationActivity extends AppCompatActivity {
 
     private void setToolbarTitle() {
         getSupportActionBar().setTitle(fragmenttitles[navItemIndex]);
-    }
-
-    private void selectNavMenu() {
-        navigationView.getMenu().getItem(navItemIndex).setChecked(true);
     }
 
     private void setUpNavigationView() {
@@ -227,20 +252,20 @@ public class NavigationActivity extends AppCompatActivity {
                         navItemIndex = 3;
                         CURRENT_TAG = TAG_Workshop;
 
-                    }else if (id == R.id.nav_shows) {
+                    }else if (id == R.id.nav_summit) {
 
                         navItemIndex = 4;
-                        CURRENT_TAG = TAG_Shows;
+                        CURRENT_TAG = TAG_Summit;
 
                     }else if (id == R.id.nav_spotlight) {
 
                         navItemIndex = 5;
                         CURRENT_TAG = TAG_Spotlight;
 
-                    }else if (id == R.id.nav_summit) {
+                    }else if (id == R.id.nav_shows) {
 
                         navItemIndex = 6;
-                        CURRENT_TAG = TAG_Summit;
+                        CURRENT_TAG = TAG_Shows;
 
                     }else if (id == R.id.nav_hospitality) {
 
@@ -261,7 +286,7 @@ public class NavigationActivity extends AppCompatActivity {
 
                         navItemIndex = 10;
                         CURRENT_TAG = TAG_Qrscan;
-                        MainActivity.qrScan.initiateScan();
+                        //MainActivity.qrScan.initiateScan();
 
                     }else if (id == R.id.nav_logout) {
 
@@ -345,16 +370,9 @@ public class NavigationActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.nav_logout) {
-            Toast.makeText(getApplicationContext(), "Logout user!", Toast.LENGTH_LONG).show();
-            return true;
-        }
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
 
         return super.onOptionsItemSelected(item);
     }
@@ -367,7 +385,6 @@ public class NavigationActivity extends AppCompatActivity {
             fab.hide();
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -375,4 +392,8 @@ public class NavigationActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }

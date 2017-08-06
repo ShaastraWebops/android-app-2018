@@ -219,9 +219,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             bt_go.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent navigate = new Intent(MainActivity.this,Main2Activity.class);
-                    navigate.putExtra("Activityname",qr_response);
-                    startActivity(navigate);
+                   // Intent navigate = new Intent(MainActivity.this,Main2Activity.class);
+                    //navigate.putExtra("Activityname",qr_response);
+                    //startActivity(navigate);
                 }
             });
 
