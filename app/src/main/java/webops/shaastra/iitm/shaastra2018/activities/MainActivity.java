@@ -1,77 +1,57 @@
-package webops.shaastra.iitm.shaastra2018;
+package webops.shaastra.iitm.shaastra2018.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.hardware.Camera;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.client.android.Intents;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.journeyapps.barcodescanner.CompoundBarcodeView;
-import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.core.decode.BaseImageDecoder;
-import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
-import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
-import com.nostra13.universalimageloader.utils.StorageUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-import java.io.File;
-
-import webops.shaastra.iitm.shaastra2018.imageCaching.ImageUtil;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import webops.shaastra.iitm.shaastra2018.objects.Location;
+import webops.shaastra.iitm.shaastra2018.R;
+import webops.shaastra.iitm.shaastra2018.imageCaching.ImageUtil;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button bt_qrscan, log_act_button;
+    public static Button bt_qrscan, log_act_button;
     //qr code scanner object
-    private IntentIntegrator qrScan;
+    public static IntentIntegrator qrScan;
     boolean isClicked = true;
     PopupWindow popUpWindow;
     RelativeLayout mainLayout;
     CardView containerLayout;
     private Button reg_act_button;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         ArrayList<Location> locs = new ArrayList<Location>();
         initLocations(locs);
-
 
         mainLayout = (RelativeLayout)findViewById(R.id.rl_main);
 
@@ -81,10 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         popUpWindow.setContentView(containerLayout);
 
-
         bt_qrscan = (Button)findViewById(R.id.bt_qr_scan);
-
-
 
         //intializing scan object
         qrScan = new IntentIntegrator(this);
@@ -131,9 +108,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(i);
             }
         });
-
-
-
     }
 
     public void initLocations(ArrayList<Location> locs){
@@ -187,8 +161,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } else {
                 //if qr contains data
                 //converting the data to json
-
                 //setting values to activity_variable
+
                 activity_name = String.valueOf(result.getContents());
                 initiatePopupWindow(bt_qrscan,activity_name);
 
@@ -205,7 +179,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         try {
             //We need to get the instance of the LayoutInflater, use the context of this activity
-
             popUpWindow.setTouchable(true);
             popUpWindow.setFocusable(true);
 
@@ -223,9 +196,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             bt_go = (Button)layout.findViewById(R.id.bt_go);
 
             tv_qr_response.setText(qr_response);
-
-
-
 
             popUpWindow = new PopupWindow(layout,CardView.LayoutParams.WRAP_CONTENT,CardView.LayoutParams.WRAP_CONTENT,true);
             // display the popup in the center
@@ -255,13 +225,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             });
 
-
         } catch (Exception e) {
             e.printStackTrace();
         }
 
 
     }
+
     @Override
     public void onClick(View v) {
 
