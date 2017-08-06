@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static Button bt_qrscan, log_act_button;
     //qr code scanner object
     public static IntentIntegrator qrScan;
-    boolean isClicked = true;
     PopupWindow popUpWindow;
     RelativeLayout mainLayout;
     CardView containerLayout;
@@ -150,7 +149,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //Getting the scan results
     @Override
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         final String activity_name;

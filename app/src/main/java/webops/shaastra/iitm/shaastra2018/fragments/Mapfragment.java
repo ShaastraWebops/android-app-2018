@@ -103,19 +103,16 @@ public class Mapfragment extends Fragment {
                 googleMap = mMap;
 
                 // For showing a move to my location button
-                googleMap.setMyLocationEnabled(true);
+                // googleMap.setMyLocationEnabled(true);
 
                 // Add a marker on the location of the event which was passed as an extra in the intent
                 LatLng eventLoc = new LatLng(lat1,lng1);
                 googleMap.addMarker(new MarkerOptions().position(eventLoc).title(loc));
 
                 // Move the camera and zoom it in
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(eventLoc).zoom(12).build();
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(eventLoc).zoom(18).build();
                 // For zooming automatically to the location of the marker
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-
-
             }
         });
 
