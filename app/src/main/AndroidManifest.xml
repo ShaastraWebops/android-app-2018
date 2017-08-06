@@ -41,10 +41,10 @@
         <activity android:name=".MapActivity" />
         <activity android:name=".Main2Activity" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".mainUI.LoginActivity"
             android:label="@string/title_activity_login" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".mainUI.RegisterActivity"
             android:label="@string/title_activity_register" />
         <activity
             android:name=".mainUI.InitialSplash"

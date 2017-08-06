@@ -15,4 +15,5 @@
         completions."
     </string>
     <string name="title_activity_register">Register a new Account</string>
+    <string name="user_login_url">http://shaastra.org:8000/auth/local</string>
 </resources>

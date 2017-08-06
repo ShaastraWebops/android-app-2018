@@ -1,4 +1,4 @@
-package webops.shaastra.iitm.shaastra2018;
+package webops.shaastra.iitm.shaastra2018.mainUI;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -31,6 +31,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import webops.shaastra.iitm.shaastra2018.R;
 
 import static android.Manifest.permission.READ_CONTACTS;
 

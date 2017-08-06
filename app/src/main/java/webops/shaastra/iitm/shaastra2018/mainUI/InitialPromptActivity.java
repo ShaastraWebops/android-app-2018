@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import webops.shaastra.iitm.shaastra2018.LoginActivity;
 import webops.shaastra.iitm.shaastra2018.R;
-import webops.shaastra.iitm.shaastra2018.RegisterActivity;
 
 public class InitialPromptActivity extends AppCompatActivity {
 
