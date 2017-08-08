@@ -10,7 +10,6 @@ import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import webops.shaastra.iitm.shaastra2018.MainActivity;
 import webops.shaastra.iitm.shaastra2018.R;
 import webops.shaastra.iitm.shaastra2018.imageCaching.ImageUtil;
 

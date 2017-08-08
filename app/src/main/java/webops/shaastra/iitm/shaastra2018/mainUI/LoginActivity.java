@@ -42,8 +42,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import webops.shaastra.iitm.shaastra2018.HttpGetRequest;
-import webops.shaastra.iitm.shaastra2018.HttpPostRequest;
 import webops.shaastra.iitm.shaastra2018.R;
 
 import static android.Manifest.permission.READ_CONTACTS;
