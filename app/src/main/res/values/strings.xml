@@ -14,5 +14,50 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
     <string name="title_activity_register">Register a new Account</string>
+    <string name="title_activity_navigation">NavigationActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- Navigation Drawer menu labels -->
+    <string name="nav_home">Home</string>
+    <string name="nav_userProfile">User Profile</string>
+    <string name="nav_events">Events</string>
+    <string name="nav_workshops">Workshops</string>
+    <string name="nav_summit">Summit</string>
+    <string name="nav_spotlight">Spotlight</string>
+    <string name="nav_show">Shows</string>
+    <string name="nav_hospi">Hospitality</string>
+    <string name="nav_map">Map</string>
+    <string name="nav_spons">Sponsors</string>
+    <string name="nav_qr">QR Scanner</string>
+    <string name="nav_logout">Logout</string>
+
+    <!-- Toolbar titles when navigation menu item is selected -->
+    <string-array name="nav_item_activity_titles">
+        <item>Home</item>
+        <item>User Profile</item>
+        <item>Events</item>
+        <item>Workshops</item>
+        <item>Summit</item>
+        <item>Spotlight</item>
+        <item>Shows</item>
+        <item>Hospitality</item>
+        <item>Map</item>
+        <item>Sponsors</item>
+        <item>QR Scanner</item>
+        <item>Logout</item>
+    </string-array>
+
+    <string name="activity_title_about_us">About Us</string>
+    <string name="activity_title_privacy_policy">Privacy Policy</string>
+    <string name="action_logout">Logout</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

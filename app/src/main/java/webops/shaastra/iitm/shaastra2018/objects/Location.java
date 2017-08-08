@@ -1,4 +1,4 @@
-package webops.shaastra.iitm.shaastra2018;
+package webops.shaastra.iitm.shaastra2018.objects;
 
 import org.json.JSONException;
 import org.json.JSONObject;
