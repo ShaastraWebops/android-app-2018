@@ -1,8 +1,8 @@
-package webops.shaastra.iitm.shaastra2018;
+package webops.shaastra.iitm.shaastra2018.activities;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -10,6 +10,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import webops.shaastra.iitm.shaastra2018.R;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
     public String loc;

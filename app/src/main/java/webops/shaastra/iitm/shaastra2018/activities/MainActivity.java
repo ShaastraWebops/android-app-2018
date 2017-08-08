@@ -1,10 +1,11 @@
-package webops.shaastra.iitm.shaastra2018;
+package webops.shaastra.iitm.shaastra2018.activities;
 
 import android.content.Context;
 import android.content.Intent;
+
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -25,7 +26,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 import webops.shaastra.iitm.shaastra2018.imageCaching.ImageUtil;
 import webops.shaastra.iitm.shaastra2018.mainUI.InitialSplash;
 import webops.shaastra.iitm.shaastra2018.mainUI.LoginActivity;
@@ -35,29 +35,29 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import webops.shaastra.iitm.shaastra2018.objects.Location;
+import webops.shaastra.iitm.shaastra2018.R;
+import webops.shaastra.iitm.shaastra2018.imageCaching.ImageUtil;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button bt_qrscan, log_act_button;
+    public static Button bt_qrscan, log_act_button;
     //qr code scanner object
-    private IntentIntegrator qrScan;
-    boolean isClicked = true;
+    public static IntentIntegrator qrScan;
     PopupWindow popUpWindow;
     RelativeLayout mainLayout;
     CardView containerLayout;
     private Button reg_act_button;
     private Button splash_test;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         ArrayList<Location> locs = new ArrayList<Location>();
         initLocations(locs);
-
 
         mainLayout = (RelativeLayout)findViewById(R.id.rl_main);
 
@@ -67,10 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         popUpWindow.setContentView(containerLayout);
 
-
         bt_qrscan = (Button)findViewById(R.id.bt_qr_scan);
-
-
 
         //intializing scan object
         qrScan = new IntentIntegrator(this);
@@ -127,8 +124,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-
-
     }
 
     public void initLocations(ArrayList<Location> locs){
@@ -171,7 +166,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //Getting the scan results
     @Override
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         final String activity_name;
@@ -182,8 +176,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } else {
                 //if qr contains data
                 //converting the data to json
-
                 //setting values to activity_variable
+
                 activity_name = String.valueOf(result.getContents());
                 initiatePopupWindow(bt_qrscan,activity_name);
 
@@ -200,7 +194,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         try {
             //We need to get the instance of the LayoutInflater, use the context of this activity
-
             popUpWindow.setTouchable(true);
             popUpWindow.setFocusable(true);
 
@@ -218,9 +211,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             bt_go = (Button)layout.findViewById(R.id.bt_go);
 
             tv_qr_response.setText(qr_response);
-
-
-
 
             popUpWindow = new PopupWindow(layout,CardView.LayoutParams.WRAP_CONTENT,CardView.LayoutParams.WRAP_CONTENT,true);
             // display the popup in the center
@@ -244,12 +234,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             bt_go.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent navigate = new Intent(MainActivity.this,Main2Activity.class);
-                    navigate.putExtra("Activityname",qr_response);
-                    startActivity(navigate);
+                   // Intent navigate = new Intent(MainActivity.this,Main2Activity.class);
+                    //navigate.putExtra("Activityname",qr_response);
+                    //startActivity(navigate);
                 }
             });
-
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -257,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
+
     @Override
     public void onClick(View v) {
 
