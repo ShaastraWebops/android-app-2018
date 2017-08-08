@@ -2,6 +2,7 @@ package webops.shaastra.iitm.shaastra2018.activities;
 
 import android.content.Context;
 import android.content.Intent;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import webops.shaastra.iitm.shaastra2018.imageCaching.ImageUtil;
+import webops.shaastra.iitm.shaastra2018.mainUI.InitialSplash;
+import webops.shaastra.iitm.shaastra2018.mainUI.LoginActivity;
+import webops.shaastra.iitm.shaastra2018.mainUI.RegisterActivity;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -43,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     RelativeLayout mainLayout;
     CardView containerLayout;
     private Button reg_act_button;
+    private Button splash_test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +114,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(i);
             }
         });
+
+        splash_test = (Button) findViewById(R.id.splash_test);
+        splash_test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, InitialSplash.class);
+                startActivity(i);
+            }
+        });
+
     }
 
     public void initLocations(ArrayList<Location> locs){

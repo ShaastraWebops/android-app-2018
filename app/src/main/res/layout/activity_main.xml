@@ -13,7 +13,11 @@
         android:layout_height="495dp"
         android:id="@+id/imView"
         tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="8dp" />
+        tools:layout_editor_absoluteX="8dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,6 +40,14 @@
         android:text="Register"
         android:id="@+id/register_act_button"
         android:layout_below="@+id/login_act_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <Button
+        android:text="Test Splash"
+        android:id="@+id/splash_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/register_act_button"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
