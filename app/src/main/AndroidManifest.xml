@@ -44,15 +44,25 @@
             android:name=".activities.NavigationActivity"
             android:label="@string/title_activity_navigation"
             android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+
+        <activity android:name=".mainUI.InitialPromptActivity"
+            android:theme="@style/HiddenTitleTheme"></activity>
+
+        <activity android:name=".mainUI.InitialSplash"
+            android:theme="@style/HiddenTitleTheme">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
-        <activity android:name=".mainUI.InitialPromptActivity"
-            android:theme="@style/HiddenTitleTheme"></activity>
+        <activity android:name=".mainUI.LoginActivity"></activity>
+        <activity android:name=".mainUI.RegisterActivity"></activity>
 
         <service
             android:name=".MyFirebaseMessagingService">

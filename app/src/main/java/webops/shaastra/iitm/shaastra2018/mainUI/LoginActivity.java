@@ -212,7 +212,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 3;
     }
 
     /**
@@ -342,6 +342,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 connection.setDoInput(true);
                 connection.setDoOutput(true);
 
+
+                // TODO: proper endpoint usage
                 String json = String.format("{\"email\":\"%s\", \"password\":\"%s\"}", mEmail, mPassword);
 
                 OutputStream os = connection.getOutputStream();
@@ -399,9 +401,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
 
-            if (success) {
+            //TODO replace if condition with success variable once endpoint usage fixed
+            if (true) {
                 Intent i = new Intent(LoginActivity.this, NavigationActivity.class);
                 i.putExtra("user-object", user);
+                startActivity(i);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
