@@ -3,6 +3,7 @@ package webops.shaastra.iitm.shaastra2018.mainUI;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -43,6 +44,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import webops.shaastra.iitm.shaastra2018.R;
+import webops.shaastra.iitm.shaastra2018.activities.NavigationActivity;
+import webops.shaastra.iitm.shaastra2018.objects.UserObject;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -313,6 +316,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         public static final String REQUEST_METHOD = "POST";
         public static final int READ_TIMEOUT = 15000;
         public static final int CONNECTION_TIMEOUT = 15000;
+        private UserObject user;
 
         UserLoginTask(String email, String password) {
             mEmail = email;
@@ -385,6 +389,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             Log.i("RESULT",result);
 
+            user = new UserObject(result);
+
             return true;
         }
 
@@ -394,7 +400,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                finish();
+                Intent i = new Intent(LoginActivity.this, NavigationActivity.class);
+                i.putExtra("user-object", user);
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();

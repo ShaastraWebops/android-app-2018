@@ -41,6 +41,7 @@ import webops.shaastra.iitm.shaastra2018.fragments.Spotlightfragment;
 import webops.shaastra.iitm.shaastra2018.fragments.Summitfragment;
 import webops.shaastra.iitm.shaastra2018.fragments.UserProfilefragment;
 import webops.shaastra.iitm.shaastra2018.fragments.Workshopsfragment;
+import webops.shaastra.iitm.shaastra2018.objects.UserObject;
 
 public class NavigationActivity extends AppCompatActivity  implements Homefragment.OnFragmentInteractionListener{
 
@@ -48,6 +49,8 @@ public class NavigationActivity extends AppCompatActivity  implements Homefragme
     private DrawerLayout drawer;
     private Toolbar toolbar;
     private FloatingActionButton fab;
+
+    private UserObject user;
 
     //qr code scanner object
     public static IntentIntegrator qrScan;
@@ -87,6 +90,10 @@ public class NavigationActivity extends AppCompatActivity  implements Homefragme
         setContentView(R.layout.activity_navigation);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        user = (UserObject) getIntent().getSerializableExtra("user-object");
+
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
