@@ -70,4 +70,5 @@
     <string name="prompt_city">City</string>
     <string name="prompt_gender_male">Male</string>
     <string name="prompt_gender_female">Female</string>
+    <string name="shaastra_logo_url">http://shaastra.org/images/shaastra-logos/logo-black.png</string>
 </resources>

@@ -29,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -38,6 +39,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,6 +59,7 @@ import java.util.List;
 
 import webops.shaastra.iitm.shaastra2018.R;
 import webops.shaastra.iitm.shaastra2018.activities.NavigationActivity;
+import webops.shaastra.iitm.shaastra2018.imageCaching.ImageUtil;
 import webops.shaastra.iitm.shaastra2018.objects.UserObject;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -129,6 +132,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+
+        String imageURL = getString(R.string.shaastra_logo_url);
+
+        ImageLoader imageLoader = ImageUtil.getImageLoader(this);
+
+
+        ImageView imview = (ImageView) findViewById(R.id.login_shaastra_logo);
+
+        imageLoader.displayImage(imageURL,imview);
+
+
     }
 
     private void populateAutoComplete() {
