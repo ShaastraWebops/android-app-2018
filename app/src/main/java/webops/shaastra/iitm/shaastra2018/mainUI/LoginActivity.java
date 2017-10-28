@@ -31,12 +31,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -77,6 +89,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
 
+    private RequestQueue queue;
+
+    JsonObjectRequest userLoginRequest;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +112,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
         });
+
+
+
+
+
+        queue = Volley.newRequestQueue(this);
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
@@ -192,6 +214,74 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             cancel = true;
         }
 
+
+        JSONObject params = new JSONObject();
+        try {
+            params.put("email",email);
+            params.put("password",password);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        userLoginRequest = new JsonObjectRequest
+                (Request.Method.POST, getString(R.string.user_login_url), params, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i("userLoginRequestRespons", response.toString());
+                        showProgress(false);
+
+                        UserObject user = new UserObject(response);
+                        Intent i = new Intent(LoginActivity.this, NavigationActivity.class);
+                        i.putExtra("user-object", user);
+                        startActivity(i);
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        showProgress(false);
+
+                        String body="";
+
+                        if(error.networkResponse.data!=null) {
+                            try {
+                                body = new String(error.networkResponse.data,"UTF-8");
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        Log.i("volleyErrorBody",body);
+
+                        JSONObject jsBody = null;
+                        try {
+                            jsBody = new JSONObject(body);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+                        String m = "";
+                        try {
+                            m = jsBody.getString("message");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        if(m.contains("password")) {
+                            mPasswordView.setError(m);
+                            mPasswordView.requestFocus();
+                        }else{
+                            mEmailView.setError(m);
+                            mEmailView.requestFocus();
+                        }
+
+                    }
+                });
+
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -200,8 +290,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            //mAuthTask = new UserLoginTask(email, password);
+            //mAuthTask.execute((Void) null);
+            queue.add(userLoginRequest);
         }
     }
 
@@ -212,7 +303,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 3;
+        return password.length() > 2;
     }
 
     /**
