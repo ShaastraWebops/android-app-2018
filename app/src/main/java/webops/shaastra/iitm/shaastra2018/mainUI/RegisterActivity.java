@@ -3,6 +3,7 @@ package webops.shaastra.iitm.shaastra2018.mainUI;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.ContentValues;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -53,6 +54,9 @@ public class RegisterActivity extends AppCompatActivity{
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
+    private static final String NAME = "name",
+        EMAIL = "email", PASSWORD = "password", CONFIRM_PASSWORD = "confirmPassword", COLLEGE = "college",
+    CONTACT = "contact", CITY = "city";
     /**
      * Keep track of the Register task to ensure we can cancel it if requested.
      */
@@ -60,9 +64,9 @@ public class RegisterActivity extends AppCompatActivity{
 
     // UI references.
     private TextView mEmailView;
-    private EditText mPasswordView;
+    private EditText mName, mPasswordView, mConfirmPassword, mCollege, mContact, mCity;
     private View mProgressView;
-    private View mRegisterFormView;
+    private View mRegisterFormView, focusView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +75,9 @@ public class RegisterActivity extends AppCompatActivity{
         // Set up the Register form.
         mEmailView = (TextView) findViewById(R.id.email);
 
+        mName = (EditText) findViewById(R.id.register_form_field_name);
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        /*mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.register || id == EditorInfo.IME_NULL) {
@@ -81,7 +86,13 @@ public class RegisterActivity extends AppCompatActivity{
                 }
                 return false;
             }
-        });
+        });*/
+
+        mConfirmPassword = (EditText) findViewById(R.id.confirmPassword);
+        mCollege = (EditText) findViewById(R.id.college);
+        mContact = (EditText) findViewById(R.id.register_form_field_contact);
+        mCity = (EditText) findViewById(R.id.register_form_field_city);
+
 
         Button mEmailRegisterButton = (Button) findViewById(R.id.email_register_button);
         mEmailRegisterButton.setOnClickListener(new OnClickListener() {
@@ -97,7 +108,7 @@ public class RegisterActivity extends AppCompatActivity{
     
     
     /**
-     * Attempts to sign in or register the account specified by the Register form.
+     * Attempts to register the account specified by the Register form.
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual Register attempt is made.
      */
@@ -107,17 +118,39 @@ public class RegisterActivity extends AppCompatActivity{
         }
 
         // Reset errors.
+        mName.setError(null);
         mEmailView.setError(null);
         mPasswordView.setError(null);
+        mConfirmPassword.setError(null);
+        mCollege.setError(null);
+        mContact.setError(null);
+        mCity.setError(null);
 
         // Store values at the time of the Register attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        String  name = mName.getText().toString(),
+                email = mEmailView.getText().toString(),
+                password = mPasswordView.getText().toString(),
+                confirmPassword = mEmailView.getText().toString(),
+                college = mEmailView.getText().toString(),
+                contact = mEmailView.getText().toString(),
+                city = mEmailView.getText().toString();
+
+        ContentValues formEntries = new ContentValues();
+        formEntries.put(NAME,name);
+        formEntries.put(EMAIL,email);
+        formEntries.put(PASSWORD,password);
+        formEntries.put(CONFIRM_PASSWORD,confirmPassword);
+        formEntries.put(COLLEGE,college);
+        formEntries.put(CONTACT,contact);
+        formEntries.put(CITY,city);
 
         boolean cancel = false;
-        View focusView = null;
+        focusView = null;
 
-        // Check for a valid password, if the user entered one.
+
+        cancel = validateFormEntries(formEntries);
+
+        /*// Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
@@ -133,7 +166,7 @@ public class RegisterActivity extends AppCompatActivity{
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
-        }
+        }*/
 
         if (cancel) {
             // There was an error; don't attempt Register and focus the first
@@ -143,9 +176,32 @@ public class RegisterActivity extends AppCompatActivity{
             // Show a progress spinner, and kick off a background task to
             // perform the user Register attempt.
             showProgress(true);
-            mAuthTask = new UserRegisterTask(email, password);
+            mAuthTask = new UserRegisterTask(formEntries);
             mAuthTask.execute((Void) null);
         }
+    }
+
+    private boolean validateFormEntries(ContentValues formEntries) {
+        boolean cancel = false;
+
+        if (!TextUtils.isEmpty(formEntries.getAsString(PASSWORD)) && !isPasswordValid(formEntries.getAsString(PASSWORD))){
+            mPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = mPasswordView;
+            cancel = true;
+        }
+
+        // Check for a valid email address.
+        if (TextUtils.isEmpty(formEntries.getAsString(EMAIL))) {
+            mEmailView.setError(getString(R.string.error_field_required));
+            focusView = mEmailView;
+            cancel = true;
+        } else if (!isEmailValid(formEntries.getAsString(EMAIL))) {
+            mEmailView.setError(getString(R.string.error_invalid_email));
+            focusView = mEmailView;
+            cancel = true;
+        }
+
+        return cancel;
     }
 
     private boolean isEmailValid(String email) {
@@ -157,6 +213,12 @@ public class RegisterActivity extends AppCompatActivity{
         //TODO: Replace this with your own logic
         return password.length() > 4;
     }
+
+
+    public void onRadioButtonClicked(View v){
+
+    }
+
 
     /**
      * Shows the progress UI and hides the Register form.
@@ -203,9 +265,9 @@ public class RegisterActivity extends AppCompatActivity{
         private final String mEmail;
         private final String mPassword;
 
-        UserRegisterTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
+        UserRegisterTask(ContentValues formEntries) {
+            mEmail = formEntries.getAsString(EMAIL);
+            mPassword = formEntries.getAsString(PASSWORD);
         }
 
         @Override
