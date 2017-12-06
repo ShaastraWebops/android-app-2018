@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_teamHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp"
+        android:text="TeamDetails" />
+    
+    <android.support.design.widget.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tie_teamName"
+        android:layout_below="@+id/tv_teamHeader"
+        >
+
+        <EditText
+            android:id="@+id/tv_teamName"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:hint="Team Name"
+            android:inputType="text"
+
+            />
+   </android.support.design.widget.TextInputEditText>
+
+    <android.support.design.widget.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tie_teamName"
+        >
+
+        <EditText
+            android:id="@+id/tv_teamMem"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:hint="Enter the Shaastra ID of your friend"
+            android:inputType="text"
+            />
+    </android.support.design.widget.TextInputEditText>
+</RelativeLayout>

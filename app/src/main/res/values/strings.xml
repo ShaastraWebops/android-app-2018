@@ -71,4 +71,5 @@
     <string name="prompt_gender_male">Male</string>
     <string name="prompt_gender_female">Female</string>
     <string name="shaastra_logo_url">http://shaastra.org/images/shaastra-logos/logo-black.png</string>
+    <string name="shaastra_user_url">http://shaastra.org:8000/api/users/me</string>
 </resources>

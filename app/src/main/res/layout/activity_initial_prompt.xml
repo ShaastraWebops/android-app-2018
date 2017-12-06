@@ -23,7 +23,6 @@
                 android:paddingTop="100dp"
                 android:text="Sign up to get notifications,\n register for events, easy payments,\n and more!"/>
 
-
             <Button
                 android:id="@+id/initPromptSignUp"
                 android:layout_width="wrap_content"
