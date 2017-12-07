@@ -140,7 +140,7 @@
                 android:layout_below="@+id/cv_userdetails"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="8dp"
-                android:id="@+id/cv_regdetails"
+                android:id="@+id/cv_teamReg"
                 android:layout_margin="8dp">
 
                 <RelativeLayout
@@ -157,6 +157,18 @@
                         android:layout_centerHorizontal="true"
                         android:layout_margin="24dp"/>
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_teamReg_status"
+                        android:text="No Team Registrations Yet"
+                        android:textSize="18sp"
+                        android:layout_below="@+id/tv_header_teamreg"
+                        android:layout_centerHorizontal="true"
+                        android:visibility="gone"
+                        android:layout_marginBottom="24dp"/>
+
+
                     <ExpandableListView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -170,8 +182,8 @@
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_below="@+id/cv_regdetails"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cv_teamReg"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="8dp"
                 android:id="@+id/cv_individualreg"
@@ -191,12 +203,51 @@
                         android:layout_centerHorizontal="true"
                         android:layout_margin="24dp"/>
 
-                    <ExpandableListView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_indReg_status"
+                        android:text="No Individual Registrations Yet"
+                        android:textSize="18sp"
                         android:layout_below="@+id/tv_header_individualreg"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="68dp" />
+                        android:visibility="gone"
+                        android:layout_marginBottom="24dp"/>
+
+
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_header_individualreg"
+                        android:id="@+id/table_ind_reg">
+
+                        <TableRow
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:layout_margin="8dp">
+
+                            <TextView
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Event Name"
+                                android:gravity="center"
+                                android:textStyle="bold"
+                                android:textSize="16sp"
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Completed"
+                                android:layout_weight="1"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:textSize="16sp"
+                                />
+                        </TableRow>
+
+                    </TableLayout>
 
                 </RelativeLayout>
 

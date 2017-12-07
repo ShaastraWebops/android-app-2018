@@ -246,9 +246,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         Log.i("userLoginRequestRespons", response.toString());
                         showProgress(false);
 
-                        UserObject user = new UserObject(response);
+//                        UserObject user = new UserObject(response);
                         Intent i = new Intent(LoginActivity.this, NavigationActivity.class);
-                        i.putExtra("user-object", user);
+                        try {
+                            i.putExtra("user-token", response.getString("token"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         startActivity(i);
 
                     }

@@ -82,6 +82,7 @@ public class NavigationActivity extends AppCompatActivity  implements Homefragme
     // flag to load home fragment when user presses back key
     private boolean shouldLoadHomeFragOnBackPress = true;
     private Handler mHandler;
+    private String token;
 
 
     @Override
@@ -92,8 +93,7 @@ public class NavigationActivity extends AppCompatActivity  implements Homefragme
         setSupportActionBar(toolbar);
 
 
-        user = (UserObject) getIntent().getSerializableExtra("user-object");
-
+        token = getIntent().getSerializableExtra("user-token").toString();
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -277,6 +277,9 @@ public class NavigationActivity extends AppCompatActivity  implements Homefragme
                 return homeFragment;
             case 1:
                 UserProfilefragment userProfilefragment = new UserProfilefragment();
+                Bundle bundle1 = new Bundle();
+                bundle1.putString("session-token",token);
+                userProfilefragment.setArguments(bundle1);
                 return userProfilefragment;
             case 2:
                 Eventsfragment eventsfragment = new Eventsfragment();
