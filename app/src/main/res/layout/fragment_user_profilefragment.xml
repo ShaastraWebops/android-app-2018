@@ -136,7 +136,7 @@
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/cv_userdetails"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="8dp"
@@ -145,7 +145,8 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:padding="8dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -168,13 +169,14 @@
                         android:visibility="gone"
                         android:layout_marginBottom="24dp"/>
 
-
-                    <ExpandableListView
+                    <android.support.v7.widget.RecyclerView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_below="@+id/tv_header_teamreg"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="68dp" />
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rv_teams"
+                        android:visibility="gone"
+                        android:layout_below="@+id/tv_header_teamreg">
+
+                    </android.support.v7.widget.RecyclerView>
 
                 </RelativeLayout>
 
@@ -191,7 +193,8 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:padding="8dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -214,11 +217,12 @@
                         android:visibility="gone"
                         android:layout_marginBottom="24dp"/>
 
-
                     <TableLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_header_individualreg"
+                        android:visibility="gone"
+                        android:layout_marginBottom="8dp"
                         android:id="@+id/table_ind_reg">
 
                         <TableRow

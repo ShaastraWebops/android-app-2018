@@ -265,7 +265,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                         String body="";
 
-                        if(error.networkResponse.data!=null) {
+                        if(error.networkResponse.data!=null && error.networkResponse.data.length>0) {
                             try {
                                 body = new String(error.networkResponse.data,"UTF-8");
                             } catch (UnsupportedEncodingException e) {
