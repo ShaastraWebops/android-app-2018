@@ -1,14 +1,42 @@
 package webops.shaastra.iitm.shaastra2018.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Queue;
 
 import webops.shaastra.iitm.shaastra2018.R;
+import webops.shaastra.iitm.shaastra2018.activities.EventsActivity;
+import webops.shaastra.iitm.shaastra2018.activities.NavigationActivity;
+import webops.shaastra.iitm.shaastra2018.mainUI.LoginActivity;
+import webops.shaastra.iitm.shaastra2018.objects.EventListsObject;
+import webops.shaastra.iitm.shaastra2018.objects.Event_vertical;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,17 +46,23 @@ import webops.shaastra.iitm.shaastra2018.R;
  * Use the {@link Eventsfragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Eventsfragment extends Fragment {
+public class Eventsfragment extends Fragment implements Serializable{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM1 = "event_verticals";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
     private String mParam2;
 
+    private ArrayList<Event_vertical> event_verticals;
     private OnFragmentInteractionListener mListener;
+    private RecyclerView rv_verticals;
+    private VerticalAdapter adapter;
+    private String vertical_url = "http://shaastra.org:8000/api/eventLists/";
+    private RequestQueue queue;
+    private String tag = "eventVerticalRequest";
+    private EventListsObject eventListsObject;
 
     public Eventsfragment() {
         // Required empty public constructor
@@ -56,8 +90,8 @@ public class Eventsfragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            event_verticals = (ArrayList<Event_vertical>) getArguments().getSerializable(ARG_PARAM1);
+            Log.i("VErticals",event_verticals.toString());
         }
     }
 
@@ -65,7 +99,19 @@ public class Eventsfragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_events, container, false);
+        View view =  inflater.inflate(R.layout.fragment_events, container, false);
+
+        rv_verticals = (RecyclerView)view.findViewById(R.id.rv_verticals);
+        rv_verticals.setItemAnimator(new DefaultItemAnimator());
+        rv_verticals.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        adapter = new VerticalAdapter(event_verticals,getContext());
+        rv_verticals.setAdapter(adapter);
+
+
+        queue = Volley.newRequestQueue(getContext());
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -74,8 +120,6 @@ public class Eventsfragment extends Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }
-
-
 
     @Override
     public void onDetach() {
@@ -97,4 +141,89 @@ public class Eventsfragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    public class VerticalAdapter extends RecyclerView.Adapter<VerticalAdapter.ViewHolder>
+
+    {
+        Context context;
+        ArrayList<Event_vertical> event_verticals;
+
+        public VerticalAdapter(ArrayList<Event_vertical> event_verticals, Context context){
+            this.event_verticals = event_verticals;
+            this.context = context;
+        }
+
+        @Override
+        public VerticalAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(context).inflate(R.layout.item_event_verticals, parent, false);
+            return new ViewHolder(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(final VerticalAdapter.ViewHolder holder, int position) {
+            holder.tv_verticalName.setText(event_verticals.get(holder.getAdapterPosition()).title);
+
+            holder.cv_vertical.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET,vertical_url+event_verticals.get(holder.getAdapterPosition()).id,
+                            null, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+
+                            eventListsObject = new EventListsObject(response);
+
+                            Intent i = new Intent(getContext() , EventsActivity.class);
+                            Bundle args = new Bundle();
+                            args.putSerializable("events",(Serializable) eventListsObject);
+                            i.putExtra("BUNDLE",args);
+                            startActivity(i);
+
+                        }
+                    },new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            VolleyLog.d(tag, "Error: " + error.getMessage());
+                            Log.e(tag, "Site Info Error: " + error.getMessage());
+                            Toast.makeText(getActivity().getApplicationContext(),
+                                    error.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    queue.add(req);
+                }
+
+        });
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return position;
+        }
+
+
+        @Override
+        public int getItemCount() {
+            return event_verticals.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            public TextView tv_verticalName;
+            public CardView cv_vertical;
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+                tv_verticalName = (TextView)itemView.findViewById(R.id.tv_eventVerticals_name);
+                cv_vertical = (CardView)itemView.findViewById(R.id.cv_event_vertical);
+            }
+        }
+    }
+
+
 }

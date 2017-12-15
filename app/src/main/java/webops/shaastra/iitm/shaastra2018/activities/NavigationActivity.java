@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -29,6 +30,16 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import webops.shaastra.iitm.shaastra2018.R;
 import webops.shaastra.iitm.shaastra2018.fragments.Eventsfragment;
 import webops.shaastra.iitm.shaastra2018.fragments.Homefragment;
@@ -42,6 +53,7 @@ import webops.shaastra.iitm.shaastra2018.fragments.Summitfragment;
 import webops.shaastra.iitm.shaastra2018.fragments.UserProfilefragment;
 import webops.shaastra.iitm.shaastra2018.fragments.Workshopsfragment;
 import webops.shaastra.iitm.shaastra2018.objects.UserObject;
+import webops.shaastra.iitm.shaastra2018.objects.Event_vertical;
 
 public class NavigationActivity extends AppCompatActivity  implements Homefragment.OnFragmentInteractionListener{
 
@@ -75,6 +87,7 @@ public class NavigationActivity extends AppCompatActivity  implements Homefragme
     private static  String TAG_logout ;
 
     public static String CURRENT_TAG = TAG_HOME;
+    private ArrayList<Event_vertical> event_verticals;
 
     // toolbar titles respected to selected nav menu item
     private static String[] fragmenttitles;
@@ -126,10 +139,12 @@ public class NavigationActivity extends AppCompatActivity  implements Homefragme
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        event_verticals = new ArrayList<>();
+        init_event_verticals(event_verticals);
+
         // initializing navigation menu
         navigationView = (NavigationView)findViewById(R.id.nav_view);
         setUpNavigationView();
-
 
         containerLayout = (CardView) findViewById(R.id.cv_popup);
         popUpWindow = new PopupWindow(NavigationActivity.this);
@@ -145,7 +160,39 @@ public class NavigationActivity extends AppCompatActivity  implements Homefragme
         }
     }
 
+    public void init_event_verticals(ArrayList<Event_vertical> event_verticals){
 
+        String samplesString = loadJSONStringFromAsset("event_verticals.json");
+        try {
+            JSONArray verticals = new JSONArray(samplesString);
+            for(int i=0;i<verticals.length();i++){
+                JSONObject verticaljson = verticals.getJSONObject(i);
+                Event_vertical vertical = new Event_vertical(verticaljson.getString("id"),verticaljson.getString("title"));
+                event_verticals.add(vertical);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public String loadJSONStringFromAsset(String filename) {
+        // Read a string from a JSON file
+        String json;
+        try {
+            InputStream is = this.getAssets().open(filename);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+
+    }
     //Getting the scan results
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -283,6 +330,9 @@ public class NavigationActivity extends AppCompatActivity  implements Homefragme
                 return userProfilefragment;
             case 2:
                 Eventsfragment eventsfragment = new Eventsfragment();
+                Bundle bundle2 = new Bundle();
+                bundle2.putSerializable("event_verticals",(Serializable) event_verticals);
+                eventsfragment.setArguments(bundle2);
                 return eventsfragment;
             case 3:
                 Workshopsfragment workshopsfragment = new Workshopsfragment();
