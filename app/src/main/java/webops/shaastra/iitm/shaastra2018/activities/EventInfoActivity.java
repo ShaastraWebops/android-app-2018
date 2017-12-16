@@ -19,7 +19,7 @@ public class EventInfoActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Bundle args = intent.getBundleExtra("BUNDLE");
-        eventObject = (EventObject) args.getSerializable("eventinfo");
+        eventObject = (EventObject) args.getParcelable("eventinfo");
 
         TextView tv_event_name = (TextView)findViewById(R.id.tv_eventName);
 

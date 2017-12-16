@@ -52,17 +52,23 @@ public class EventsActivity extends AppCompatActivity implements Serializable{
         setContentView(R.layout.activity_events);
 
         Intent intent = getIntent();
-        Bundle args = intent.getBundleExtra("BUNDLE");
-        eventListsObject = (EventListsObject) args.getSerializable("events");
+        Bundle args = intent.getExtras();
+        eventListsObject = (EventListsObject) args.getParcelable("events");
 
         rv_events = (RecyclerView) findViewById(R.id.rv_events);
         rv_events.setItemAnimator(new DefaultItemAnimator());
         rv_events.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new EventAdapter(EventsActivity.this,eventListsObject.events);
-        rv_events.setAdapter(adapter);
+        JSONArray events = null;
+        try {
+            events = new JSONArray(eventListsObject.events);
+            adapter = new EventAdapter(EventsActivity.this,events);
+            rv_events.setAdapter(adapter);
 
-        queue = Volley.newRequestQueue(this);
+            queue = Volley.newRequestQueue(this);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -97,7 +103,7 @@ public class EventsActivity extends AppCompatActivity implements Serializable{
 
                         try {
 
-                            String id = event.getString("id");
+                            String id = event.getString("_id");
 
                             JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET,event_url+id,
                                     null, new Response.Listener<JSONObject>() {
@@ -108,7 +114,7 @@ public class EventsActivity extends AppCompatActivity implements Serializable{
 
                                     Intent i = new Intent(EventsActivity.this,EventInfoActivity.class);
                                     Bundle args = new Bundle();
-                                    args.putSerializable("eventinfo",(Serializable) eventObject);
+                                    args.putParcelable("eventinfo",eventObject);
                                     i.putExtra("BUNDLE",args);
                                     startActivity(i);
 

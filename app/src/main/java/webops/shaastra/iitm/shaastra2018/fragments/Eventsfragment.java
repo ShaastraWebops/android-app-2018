@@ -91,7 +91,6 @@ public class Eventsfragment extends Fragment implements Serializable{
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             event_verticals = (ArrayList<Event_vertical>) getArguments().getSerializable(ARG_PARAM1);
-            Log.i("VErticals",event_verticals.toString());
         }
     }
 
@@ -104,6 +103,7 @@ public class Eventsfragment extends Fragment implements Serializable{
         rv_verticals = (RecyclerView)view.findViewById(R.id.rv_verticals);
         rv_verticals.setItemAnimator(new DefaultItemAnimator());
         rv_verticals.setLayoutManager(new LinearLayoutManager(getContext()));
+
 
         adapter = new VerticalAdapter(event_verticals,getContext());
         rv_verticals.setAdapter(adapter);
@@ -175,9 +175,7 @@ public class Eventsfragment extends Fragment implements Serializable{
                             eventListsObject = new EventListsObject(response);
 
                             Intent i = new Intent(getContext() , EventsActivity.class);
-                            Bundle args = new Bundle();
-                            args.putSerializable("events",(Serializable) eventListsObject);
-                            i.putExtra("BUNDLE",args);
+                            i.putExtra("events",eventListsObject);
                             startActivity(i);
 
                         }
