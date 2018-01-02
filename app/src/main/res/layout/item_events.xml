@@ -20,7 +20,6 @@
                 android:layout_height="160dp"
                 android:id="@+id/img_events"
                 android:scaleType="fitCenter"
-                android:src="@drawable/vertical_icon1"
                 android:alpha="0.8"/>
 
 
