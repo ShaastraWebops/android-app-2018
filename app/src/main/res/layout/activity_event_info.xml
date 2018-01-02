@@ -1,18 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="webops.shaastra.iitm.shaastra2018.activities.EventInfoActivity">
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/main_content"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:fitsSystemWindows="true"
+>
 
-    <TextView
+<android.support.design.widget.AppBarLayout
+    android:id="@+id/app_bar"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/app_bar_height"
+    android:fitsSystemWindows="true"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    <android.support.design.widget.CollapsingToolbarLayout
+        android:id="@+id/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        app:contentScrim="?attr/colorPrimary"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed"
+        app:titleEnabled="false"
+        app:toolbarId="@+id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_gravity="bottom"
+            app:layout_collapseMode = "pin"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:layout_margin="5dp"
+                android:id="@+id/tv_eventName" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="?android:attr/textAppearanceSmall"
+                android:gravity="center"
+                android:id="@+id/tv_date"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="?android:attr/textAppearanceSmall"
+                android:gravity="center"
+                android:id="@+id/tv_venue" />
+
+        </LinearLayout>
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/detail_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_collapseMode="pin"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    </android.support.design.widget.CollapsingToolbarLayout>
+
+</android.support.design.widget.AppBarLayout>
+
+<android.support.v4.view.ViewPager
+    android:id="@+id/container"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:paddingBottom="50dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_eventName"
-        android:text="Event Name"
-        android:textSize="24sp"
-        android:padding="4dp"
-        android:gravity="center"/>
+        app:tabBackground="?colorPrimary"
+        app:tabIndicatorColor="?colorAccent"
+        app:tabSelectedTextColor="?colorAccent"
+        app:tabTextColor="#FFFFFF"
+        android:visibility="gone"
+        app:tabMode="scrollable"
+        app:tabGravity="fill"/>
 
-</RelativeLayout>
+</android.support.v4.view.ViewPager>
+
+<include
+    android:id="@+id/bottombar"
+    layout="@layout/bottom_bar"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_gravity="bottom"/>
+
+</android.support.design.widget.CoordinatorLayout>

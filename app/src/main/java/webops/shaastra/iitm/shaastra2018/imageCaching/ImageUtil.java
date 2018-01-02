@@ -6,6 +6,7 @@ import android.provider.ContactsContract;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.decode.BaseImageDecoder;
 
 /**
  * Created by Rajat on 22-06-2017.
@@ -29,6 +30,7 @@ public class ImageUtil {
                 .diskCacheFileCount(100)
                 .defaultDisplayImageOptions(defaultOptions)
                 .writeDebugLogs()
+                .imageDecoder(new BaseImageDecoder(true))
                 .build();
 
         ImageLoader.getInstance().init(config);

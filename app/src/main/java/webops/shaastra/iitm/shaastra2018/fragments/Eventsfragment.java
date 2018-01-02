@@ -1,5 +1,6 @@
 package webops.shaastra.iitm.shaastra2018.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -7,12 +8,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,17 +26,20 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Queue;
 
 import webops.shaastra.iitm.shaastra2018.R;
 import webops.shaastra.iitm.shaastra2018.activities.EventsActivity;
 import webops.shaastra.iitm.shaastra2018.activities.NavigationActivity;
+import webops.shaastra.iitm.shaastra2018.imageCaching.ImageUtil;
 import webops.shaastra.iitm.shaastra2018.mainUI.LoginActivity;
 import webops.shaastra.iitm.shaastra2018.objects.EventListsObject;
 import webops.shaastra.iitm.shaastra2018.objects.Event_vertical;
@@ -63,6 +69,9 @@ public class Eventsfragment extends Fragment implements Serializable{
     private RequestQueue queue;
     private String tag = "eventVerticalRequest";
     private EventListsObject eventListsObject;
+    private ProgressDialog progress;
+    private ImageLoader imageLoader;
+    private String img_url = "http://shaastra.org/images/Mainwebsite_new/events/vertical_icon";
 
     public Eventsfragment() {
         // Required empty public constructor
@@ -102,7 +111,8 @@ public class Eventsfragment extends Fragment implements Serializable{
 
         rv_verticals = (RecyclerView)view.findViewById(R.id.rv_verticals);
         rv_verticals.setItemAnimator(new DefaultItemAnimator());
-        rv_verticals.setLayoutManager(new LinearLayoutManager(getContext()));
+//        rv_verticals.setLayoutManager(new LinearLayoutManager(getContext()));
+        rv_verticals.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
 
         adapter = new VerticalAdapter(event_verticals,getContext());
@@ -162,10 +172,20 @@ public class Eventsfragment extends Fragment implements Serializable{
         @Override
         public void onBindViewHolder(final VerticalAdapter.ViewHolder holder, int position) {
             holder.tv_verticalName.setText(event_verticals.get(holder.getAdapterPosition()).title);
+            imageLoader = ImageUtil.getImageLoader(getContext());
+            int position1 = holder.getAdapterPosition()+1;
+            imageLoader.displayImage(img_url+position1+".png",holder.img_vertical);
 
             holder.cv_vertical.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    progress=new ProgressDialog(context);
+                    progress.setMessage("Fetching Events....");
+                    progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progress.setIndeterminate(true);
+                    progress.setProgress(0);
+                    progress.show();
 
                     JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET,vertical_url+event_verticals.get(holder.getAdapterPosition()).id,
                             null, new Response.Listener<JSONObject>() {
@@ -176,6 +196,8 @@ public class Eventsfragment extends Fragment implements Serializable{
 
                             Intent i = new Intent(getContext() , EventsActivity.class);
                             i.putExtra("events",eventListsObject);
+                            i.putExtra("imgid",holder.getAdapterPosition()+1);
+                            progress.dismiss();
                             startActivity(i);
 
                         }
@@ -214,11 +236,13 @@ public class Eventsfragment extends Fragment implements Serializable{
         public class ViewHolder extends RecyclerView.ViewHolder {
             public TextView tv_verticalName;
             public CardView cv_vertical;
+            public ImageView img_vertical;
 
             public ViewHolder(View itemView) {
                 super(itemView);
                 tv_verticalName = (TextView)itemView.findViewById(R.id.tv_eventVerticals_name);
                 cv_vertical = (CardView)itemView.findViewById(R.id.cv_event_vertical);
+                img_vertical = (ImageView)itemView.findViewById(R.id.img_verticals);
             }
         }
     }

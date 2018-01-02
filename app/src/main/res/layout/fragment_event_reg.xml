@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:scrollbars="vertical"
+    android:padding="8dp"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="16dp">
+
+    <ScrollView
+        android:id="@+id/reg_Details"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_event_reg"
+        android:padding="5dp"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="8dp"
+        android:scrollbars="vertical"
+        android:maxLines="18"
+        android:text="@string/hello_blank_fragment" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_event_date_head"
+        android:padding="5dp"
+        android:layout_margin="8dp"
+        android:layout_below="@+id/tv_event_reg"
+        android:gravity="left"
+        android:textSize="18sp"
+        android:visibility="visible"
+        android:textStyle="bold"
+        android:text="Event date: " />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_event_date"
+        android:padding="5dp"
+        android:layout_marginLeft="2dp"
+        android:layout_toEndOf="@+id/tv_event_date_head"
+        android:gravity="left"
+        android:textSize="18sp"
+        android:layout_alignTop="@+id/tv_event_date_head"
+        android:text="8"
+        android:visibility="visible"
+        android:layout_toRightOf="@+id/tv_event_date_head" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_event_head_startReg"
+        android:padding="5dp"
+        android:layout_margin="8dp"
+        android:layout_below="@+id/tv_event_date_head"
+        android:gravity="left"
+        android:textSize="18sp"
+        android:visibility="visible"
+        android:textStyle="bold"
+        android:text="Registration Starts On: " />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_event_startReg"
+        android:padding="5dp"
+        android:layout_marginLeft="2dp"
+        android:layout_toEndOf="@+id/tv_event_head_startReg"
+        android:gravity="left"
+        android:textSize="18sp"
+        android:layout_alignTop="@+id/tv_event_head_startReg"
+        android:text="8"
+        android:visibility="visible"
+        android:layout_toRightOf="@+id/tv_event_head_startReg" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_event_head_endReg"
+        android:padding="5dp"
+        android:layout_margin="8dp"
+        android:layout_below="@+id/tv_event_head_startReg"
+        android:gravity="left"
+        android:textSize="18sp"
+        android:visibility="visible"
+        android:textStyle="bold"
+        android:text="Registration Ends On: " />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_event_endReg"
+        android:padding="5dp"
+        android:layout_marginLeft="2dp"
+        android:layout_toEndOf="@+id/tv_event_head_endReg"
+        android:gravity="left"
+        android:textSize="18sp"
+        android:layout_alignTop="@+id/tv_event_head_endReg"
+        android:text="8"
+        android:visibility="visible"
+        android:layout_toRightOf="@+id/tv_event_head_endReg" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_event_max_head"
+        android:padding="5dp"
+        android:layout_margin="8dp"
+        android:layout_below="@+id/tv_event_head_endReg"
+        android:gravity="left"
+        android:textSize="18sp"
+        android:visibility="visible"
+        android:textStyle="bold"
+        android:text="Maximum Team Members: " />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_event_max"
+        android:padding="5dp"
+        android:layout_marginLeft="2dp"
+        android:layout_toEndOf="@+id/tv_event_max_head"
+        android:gravity="left"
+        android:textSize="18sp"
+        android:layout_alignTop="@+id/tv_event_max_head"
+        android:text="8"
+        android:visibility="visible"
+        android:layout_toRightOf="@+id/tv_event_max_head" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_event_min_head"
+        android:padding="5dp"
+        android:layout_margin="8dp"
+        android:layout_below="@+id/tv_event_max_head"
+        android:gravity="left"
+        android:textSize="18sp"
+        android:visibility="visible"
+        android:textStyle="bold"
+        android:text="Minimum Team Members: " />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_event_min"
+        android:padding="5dp"
+        android:layout_marginLeft="2dp"
+        android:layout_toEndOf="@+id/tv_event_min_head"
+        android:gravity="left"
+        android:textSize="18sp"
+        android:layout_alignTop="@+id/tv_event_min_head"
+        android:text="8"
+        android:visibility="visible"
+        android:layout_toRightOf="@+id/tv_event_min_head" />
+
+</RelativeLayout>
+    </ScrollView>
+</android.support.v7.widget.CardView>

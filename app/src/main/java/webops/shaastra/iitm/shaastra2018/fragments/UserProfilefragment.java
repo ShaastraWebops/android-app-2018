@@ -1,5 +1,6 @@
 package webops.shaastra.iitm.shaastra2018.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
@@ -42,6 +43,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import webops.shaastra.iitm.shaastra2018.R;
+import webops.shaastra.iitm.shaastra2018.activities.NavigationActivity;
 import webops.shaastra.iitm.shaastra2018.objects.UserObject;
 
 /**
@@ -68,6 +70,7 @@ public class UserProfilefragment extends Fragment {
     private UserObject user;
     private RecyclerView rv_teams;
     private TeamAdapter adapter;
+    private ProgressDialog progress;
     private OnFragmentInteractionListener mListener;
     public UserProfilefragment() {
         // Required empty public constructor
@@ -103,7 +106,7 @@ public class UserProfilefragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_user_profilefragment, container, false);
+        final View view =  inflater.inflate(R.layout.fragment_user_profilefragment, container, false);
 
         final TableLayout t1 = (TableLayout)view.findViewById(R.id.table_ind_reg);
         final TextView tv_username = (TextView)view.findViewById(R.id.tv_username);
@@ -119,6 +122,13 @@ public class UserProfilefragment extends Fragment {
         rv_teams.setItemAnimator(new DefaultItemAnimator());
         rv_teams.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        view.setVisibility(View.GONE);
+        progress=new ProgressDialog(getContext());
+        progress.setMessage("Loading UserProfile....");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.show();
 
         queue = Volley.newRequestQueue(getContext());
 
@@ -135,7 +145,6 @@ public class UserProfilefragment extends Fragment {
                 tv_city.setText(user.city);
                 tv_college.setText(user.college);
                 tv_shaastraId.setText(user.ShaastraId);
-
 
                 //populating teams and their registrations
                 //dynamically adding tablerows to table
@@ -161,6 +170,9 @@ public class UserProfilefragment extends Fragment {
                     populateEventsReg(user.indReg, t1);
                     t1.setVisibility(View.VISIBLE);
                 }
+
+                progress.dismiss();
+                view.setVisibility(View.VISIBLE);
 
             }
         }, new Response.ErrorListener() {

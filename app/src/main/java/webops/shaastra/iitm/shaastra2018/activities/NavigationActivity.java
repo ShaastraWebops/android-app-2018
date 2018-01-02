@@ -1,5 +1,6 @@
 package webops.shaastra.iitm.shaastra2018.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -63,6 +64,7 @@ public class NavigationActivity extends AppCompatActivity  implements Homefragme
     private FloatingActionButton fab;
 
     private UserObject user;
+    public static ProgressDialog progress;
 
     //qr code scanner object
     public static IntentIntegrator qrScan;
