@@ -4,38 +4,40 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.ContentValues;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
 
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 
 import webops.shaastra.iitm.shaastra2018.R;
-
-import static android.Manifest.permission.READ_CONTACTS;
+import webops.shaastra.iitm.shaastra2018.activities.NavigationActivity;
+import webops.shaastra.iitm.shaastra2018.imageCaching.ImageUtil;
 
 /**
  * A Register screen that offers Register via email/password.
@@ -56,7 +58,7 @@ public class RegisterActivity extends AppCompatActivity{
     };
     private static final String NAME = "name",
         EMAIL = "email", PASSWORD = "password", CONFIRM_PASSWORD = "confirmPassword", COLLEGE = "college",
-    CONTACT = "contact", CITY = "city";
+    CONTACT = "mob_no", CITY = "city", ISATTEND="lastyearcheck",GENDER = "gender";
     /**
      * Keep track of the Register task to ensure we can cancel it if requested.
      */
@@ -65,8 +67,13 @@ public class RegisterActivity extends AppCompatActivity{
     // UI references.
     private TextView mEmailView;
     private EditText mName, mPasswordView, mConfirmPassword, mCollege, mContact, mCity;
+    private RadioButton isAttend;
     private View mProgressView;
     private View mRegisterFormView, focusView;
+    private JsonObjectRequest userSigninRequest;
+    private RequestQueue queue;
+    private RadioGroup genderRg,isAttendRg;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,16 +84,19 @@ public class RegisterActivity extends AppCompatActivity{
 
         mName = (EditText) findViewById(R.id.register_form_field_name);
         mPasswordView = (EditText) findViewById(R.id.password);
-        /*mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.register || id == EditorInfo.IME_NULL) {
-                    attemptRegister();
-                    return true;
-                }
-                return false;
-            }
-        });*/
+        isAttend = (RadioButton)findViewById(R.id.register_form_yes);
+
+
+        String imageURL = getString(R.string.shaastra_logo_url);
+
+        ImageLoader imageLoader = ImageUtil.getImageLoader(this);
+
+        ImageView imview = (ImageView) findViewById(R.id.login_shaastra_logo);
+
+        imageLoader.displayImage(imageURL,imview);
+
+        queue = Volley.newRequestQueue(this);
+
 
         mConfirmPassword = (EditText) findViewById(R.id.confirmPassword);
         mCollege = (EditText) findViewById(R.id.college);
@@ -130,43 +140,43 @@ public class RegisterActivity extends AppCompatActivity{
         String  name = mName.getText().toString(),
                 email = mEmailView.getText().toString(),
                 password = mPasswordView.getText().toString(),
-                confirmPassword = mEmailView.getText().toString(),
-                college = mEmailView.getText().toString(),
-                contact = mEmailView.getText().toString(),
-                city = mEmailView.getText().toString();
+                confirmPassword = mConfirmPassword.getText().toString(),
+                contact = mContact.getText().toString(),
+                college = mCollege.getText().toString(),
+                city = mCity.getText().toString();
 
-        ContentValues formEntries = new ContentValues();
-        formEntries.put(NAME,name);
-        formEntries.put(EMAIL,email);
-        formEntries.put(PASSWORD,password);
-        formEntries.put(CONFIRM_PASSWORD,confirmPassword);
-        formEntries.put(COLLEGE,college);
-        formEntries.put(CONTACT,contact);
-        formEntries.put(CITY,city);
+        genderRg = (RadioGroup) findViewById(R.id.rg_gender);
+        isAttendRg = (RadioGroup)findViewById(R.id.rg_isAttend);
+
+        final JSONObject formEntries = new JSONObject();
+        try {
+
+            formEntries.put(NAME,name);
+            formEntries.put(EMAIL,email);
+            formEntries.put(PASSWORD,password);
+            formEntries.put(CONFIRM_PASSWORD,confirmPassword);
+            formEntries.put(COLLEGE,college);
+            formEntries.put(CONTACT,contact);
+            formEntries.put(CITY,city);
+
+            // get selected radio button from radioGroup
+            int selectedId = isAttendRg.getCheckedRadioButtonId();
+            final String value = ((RadioButton)findViewById(selectedId)).getText().toString();
+
+            int selectedId1 = genderRg.getCheckedRadioButtonId();
+            final String value1 = ((RadioButton)findViewById(selectedId1)).getText().toString();
+
+            formEntries.put(GENDER,value1);
+            formEntries.put(ISATTEND,value);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         boolean cancel = false;
         focusView = null;
 
-
         cancel = validateFormEntries(formEntries);
-
-        /*// Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }*/
 
         if (cancel) {
             // There was an error; don't attempt Register and focus the first
@@ -176,30 +186,104 @@ public class RegisterActivity extends AppCompatActivity{
             // Show a progress spinner, and kick off a background task to
             // perform the user Register attempt.
             showProgress(true);
-            mAuthTask = new UserRegisterTask(formEntries);
-            mAuthTask.execute((Void) null);
+
+            formEntries.remove(CONFIRM_PASSWORD);
+            userSigninRequest = new JsonObjectRequest
+                    (Request.Method.POST,"http://shaastra.org:8000/api/users",formEntries, new Response.Listener<JSONObject>() {
+
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.i("userSignRequestRespons", response.toString());
+                            showProgress(false);
+
+                            Intent i = new Intent(RegisterActivity.this,LoginActivity.class);
+//                            try {
+//                                i.putExtra("user-token", response.getString("token"));
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+                            startActivity(i);
+
+                        }
+                    }, new Response.ErrorListener() {
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                            showProgress(false);
+
+                            mPasswordView.setError(getString(R.string.error_incorrect_password));
+                            mPasswordView.requestFocus();
+
+                            String body="";
+
+                            if(error.networkResponse.data!=null && error.networkResponse.data.length>0) {
+                                try {
+                                    body = new String(error.networkResponse.data,"UTF-8");
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            Log.i("volleyErrorBody",body);
+
+                            JSONObject jsBody = null;
+                            try {
+                                jsBody = new JSONObject(body);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            String m = "";
+                            try {
+                                m = jsBody.getString("message");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            if(m.contains("password")) {
+                                mPasswordView.setError(m);
+                                mPasswordView.requestFocus();
+                            }else{
+                                mEmailView.setError(m);
+                                mEmailView.requestFocus();
+                            }
+
+                        }
+                    });
+
+            queue.add(userSigninRequest);
+
+
+//            mAuthTask = new UserRegisterTask(formEntries);
+//            mAuthTask.execute((Void) null);
         }
     }
 
-    private boolean validateFormEntries(ContentValues formEntries) {
+    private boolean validateFormEntries(JSONObject formEntries) {
         boolean cancel = false;
 
-        if (!TextUtils.isEmpty(formEntries.getAsString(PASSWORD)) && !isPasswordValid(formEntries.getAsString(PASSWORD))){
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
+        try {
+            if (!TextUtils.isEmpty(formEntries.getString(PASSWORD)) && !isPasswordValid(formEntries.getString(PASSWORD))){
+                mPasswordView.setError(getString(R.string.error_invalid_password));
+                focusView = mPasswordView;
+                cancel = true;
+            }
+            // Check for a valid email address.
+            if (TextUtils.isEmpty(formEntries.getString(EMAIL))) {
+                mEmailView.setError(getString(R.string.error_field_required));
+                focusView = mEmailView;
+                cancel = true;
+            } else if (!isEmailValid(formEntries.getString(EMAIL))) {
+                mEmailView.setError(getString(R.string.error_invalid_email));
+                focusView = mEmailView;
+                cancel = true;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(formEntries.getAsString(EMAIL))) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(formEntries.getAsString(EMAIL))) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
+
 
         return cancel;
     }

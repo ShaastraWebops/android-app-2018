@@ -14,9 +14,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -90,6 +92,7 @@ public class NavigationActivity extends AppCompatActivity  implements Homefragme
 
     public static String CURRENT_TAG = TAG_HOME;
     private ArrayList<Event_vertical> event_verticals;
+    private ArrayList<Event_vertical>w_verticals;
 
     // toolbar titles respected to selected nav menu item
     private static String[] fragmenttitles;
@@ -119,6 +122,8 @@ public class NavigationActivity extends AppCompatActivity  implements Homefragme
             }
         });
 
+        setTitle("Home");
+
         TAG_HOME = getResources().getString(R.string.nav_home);;
         TAG_Userprofile = getResources().getString(R.string.nav_userProfile);
         TAG_Events =  getResources().getString(R.string.nav_events);
@@ -142,7 +147,12 @@ public class NavigationActivity extends AppCompatActivity  implements Homefragme
         toggle.syncState();
 
         event_verticals = new ArrayList<>();
-        init_event_verticals(event_verticals);
+        init_event_verticals(event_verticals,"event_verticals.json");
+
+        w_verticals = new ArrayList<>();
+        init_event_verticals(w_verticals,"workshop_verticals.json");
+        Log.i("Workshop",w_verticals.toString());
+        Log.i("Event",event_verticals.toString());
 
         // initializing navigation menu
         navigationView = (NavigationView)findViewById(R.id.nav_view);
@@ -162,9 +172,9 @@ public class NavigationActivity extends AppCompatActivity  implements Homefragme
         }
     }
 
-    public void init_event_verticals(ArrayList<Event_vertical> event_verticals){
+    public void init_event_verticals(ArrayList<Event_vertical> event_verticals,String file){
 
-        String samplesString = loadJSONStringFromAsset("event_verticals.json");
+        String samplesString = loadJSONStringFromAsset(file);
         try {
             JSONArray verticals = new JSONArray(samplesString);
             for(int i=0;i<verticals.length();i++){
@@ -334,11 +344,16 @@ public class NavigationActivity extends AppCompatActivity  implements Homefragme
                 Eventsfragment eventsfragment = new Eventsfragment();
                 Bundle bundle2 = new Bundle();
                 bundle2.putSerializable("event_verticals",(Serializable) event_verticals);
+                bundle2.putBoolean("isEvent",true);
                 eventsfragment.setArguments(bundle2);
                 return eventsfragment;
             case 3:
-                Workshopsfragment workshopsfragment = new Workshopsfragment();
-                return workshopsfragment;
+                Eventsfragment eventsfragment1 = new Eventsfragment();
+                Bundle bundle3 = new Bundle();
+                bundle3.putSerializable("event_verticals",(Serializable) w_verticals);
+                bundle3.putBoolean("isEvent",false);
+                eventsfragment1.setArguments(bundle3);
+                return eventsfragment1;
             case 4:
                 Summitfragment summitfragment = new Summitfragment();
                 return summitfragment;
@@ -365,8 +380,9 @@ public class NavigationActivity extends AppCompatActivity  implements Homefragme
             case 10:
                     return new Homefragment();
             case 11:
-                Logoutfragment logoutfragment = new Logoutfragment();
-                return logoutfragment;
+
+//                Logoutfragment logoutfragment = new Logoutfragment();
+//                return logoutfragment;
             default:
                 return new Homefragment();
         }

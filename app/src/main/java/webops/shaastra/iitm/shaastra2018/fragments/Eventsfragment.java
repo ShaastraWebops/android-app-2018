@@ -72,6 +72,8 @@ public class Eventsfragment extends Fragment implements Serializable{
     private ProgressDialog progress;
     private ImageLoader imageLoader;
     private String img_url = "http://shaastra.org/images/Mainwebsite_new/events/vertical_icon";
+    private String w_img_url = "http://shaastra.org/images/Mainwebsite_new/workshops/vertical_icon";
+    private boolean isEvent = true;
 
     public Eventsfragment() {
         // Required empty public constructor
@@ -100,6 +102,7 @@ public class Eventsfragment extends Fragment implements Serializable{
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             event_verticals = (ArrayList<Event_vertical>) getArguments().getSerializable(ARG_PARAM1);
+            isEvent = getArguments().getBoolean("isEvent");
         }
     }
 
@@ -113,11 +116,13 @@ public class Eventsfragment extends Fragment implements Serializable{
         rv_verticals.setItemAnimator(new DefaultItemAnimator());
 //        rv_verticals.setLayoutManager(new LinearLayoutManager(getContext()));
         rv_verticals.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        TextView tv_vertical = (TextView)view.findViewById(R.id.tv_eventVerticals);
+        if(!isEvent)
+            tv_vertical.setText("Workshop Verticals");
 
 
         adapter = new VerticalAdapter(event_verticals,getContext());
         rv_verticals.setAdapter(adapter);
-
 
         queue = Volley.newRequestQueue(getContext());
 
@@ -174,14 +179,22 @@ public class Eventsfragment extends Fragment implements Serializable{
             holder.tv_verticalName.setText(event_verticals.get(holder.getAdapterPosition()).title);
             imageLoader = ImageUtil.getImageLoader(getContext());
             int position1 = holder.getAdapterPosition()+1;
-            imageLoader.displayImage(img_url+position1+".png",holder.img_vertical);
+            if(!isEvent){
+                imageLoader.displayImage(w_img_url+position1+".png",holder.img_vertical);
+            }else {
+                imageLoader.displayImage(img_url+position1+".png",holder.img_vertical);
+            }
 
             holder.cv_vertical.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     progress=new ProgressDialog(context);
-                    progress.setMessage("Fetching Events....");
+                    if(!isEvent){
+                        progress.setMessage("Fetching Workshops....");
+                    }else {
+                        progress.setMessage("Fetching Events....");
+                    }
                     progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     progress.setIndeterminate(true);
                     progress.setProgress(0);
@@ -197,6 +210,8 @@ public class Eventsfragment extends Fragment implements Serializable{
                             Intent i = new Intent(getContext() , EventsActivity.class);
                             i.putExtra("events",eventListsObject);
                             i.putExtra("imgid",holder.getAdapterPosition()+1);
+                            i.putExtra("isEvent",isEvent);
+                            i.putExtra("vertical",event_verticals.get(holder.getAdapterPosition()).title);
                             progress.dismiss();
                             startActivity(i);
 

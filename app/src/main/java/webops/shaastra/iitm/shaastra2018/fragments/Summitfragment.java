@@ -1,5 +1,6 @@
 package webops.shaastra.iitm.shaastra2018.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,6 +8,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import webops.shaastra.iitm.shaastra2018.R;
 
@@ -23,11 +27,13 @@ public class Summitfragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private WebSettings webSettings;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
+    private ProgressDialog progressDialog;
     private OnFragmentInteractionListener mListener;
 
     public Summitfragment() {
@@ -64,8 +70,42 @@ public class Summitfragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_summit, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_summit, container, false);
+        WebView webView = (WebView)view.findViewById(R.id.web_summit);
+        webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webView.setWebViewClient(new MyCustomWebViewClient(progressDialog));
+        webView.loadUrl("http://shaastra.org/#/summit#summit-home");
+        return view;
+    }
+
+
+    private class MyCustomWebViewClient extends WebViewClient {
+
+        private ProgressDialog progressBar;
+
+        public MyCustomWebViewClient(ProgressDialog progressBar) {
+            this.progressBar = progressBar;
+            this.progressBar = new ProgressDialog(getContext());
+            this.progressBar.setMessage("Loading Summit...");
+            this.progressBar.show();
+        }
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            // TODO Auto-generated method stub
+            view.loadUrl(url);
+            return true;
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            view.loadUrl("javascript:document.getElementById(\"default_navbar\").setAttribute(\"style\",\"display:none;\");");            progressBar.dismiss();
+            progressBar.dismiss();
+            view.setVisibility(View.VISIBLE);
+
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

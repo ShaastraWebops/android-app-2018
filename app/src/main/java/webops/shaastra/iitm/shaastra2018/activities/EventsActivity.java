@@ -53,6 +53,9 @@ public class EventsActivity extends AppCompatActivity implements Serializable{
     private ProgressDialog progress;
     private ImageLoader imageLoader;
     private String img_url = "http://shaastra.org/images/Mainwebsite_new/events/vertical_icon";
+    private String w_img_url = "http://shaastra.org/images/Mainwebsite_new/workshops/vertical_icon";
+    private boolean isEvent = true;
+    private String vertical;
     private int eventNo;
 
 
@@ -65,6 +68,8 @@ public class EventsActivity extends AppCompatActivity implements Serializable{
         Bundle args = intent.getExtras();
         eventListsObject = (EventListsObject) args.getParcelable("events");
         eventNo = args.getInt("imgid");
+        isEvent = args.getBoolean("isEvent");
+        vertical = args.getString("vertical");
 
 
 
@@ -110,14 +115,22 @@ public class EventsActivity extends AppCompatActivity implements Serializable{
                 final JSONObject event = events.getJSONObject(holder.getAdapterPosition());
                 holder.tv_event_name.setText(event.getString("name"));
                 imageLoader = ImageUtil.getImageLoader(context);
-                imageLoader.displayImage(img_url+eventNo+".png",holder.img_event);
+                if(isEvent)
+                    imageLoader.displayImage(img_url+eventNo+".png",holder.img_event);
+                else
+                    imageLoader.displayImage(w_img_url+eventNo+".png",holder.img_event);
+
 
                 holder.cv_event.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
                         progress=new ProgressDialog(context);
-                        progress.setMessage("Loading Event Info....");
+                        if(isEvent){
+                            progress.setMessage("Loading Event Info....");
+                        }else {
+                            progress.setMessage("Loading Workshop Info....");
+                        }
                         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                         progress.setIndeterminate(true);
                         progress.setProgress(0);
@@ -138,6 +151,7 @@ public class EventsActivity extends AppCompatActivity implements Serializable{
                                     Intent i = new Intent(EventsActivity.this,EventInfoActivity.class);
                                     Bundle args = new Bundle();
                                     args.putParcelable("eventinfo",eventObject);
+                                    args.putString("vertical",vertical);
                                     i.putExtra("BUNDLE",args);
                                     progress.dismiss();
                                     startActivity(i);
